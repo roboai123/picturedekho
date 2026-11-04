@@ -2,104 +2,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PictureDekho | Book Movie Tickets</title>
-  <meta name="description" content="Discover movies and explore cinema ticket bookings on PictureDekho.">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PictureDekho | Book Movie Tickets</title>
+<meta name="description" content="Discover movies and explore demo cinema showtimes on PictureDekho.">
+<link rel="stylesheet" href="style.css">
+<style>
+.ticket-overlay[hidden]{display:none!important}
+.ticket-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:15px;overflow:auto;font-family:Arial,sans-serif}
+.ticket{position:relative;background:#fff;color:#171923;width:100%;max-width:460px;margin:auto;padding:26px;border-radius:18px;box-sizing:border-box}
+.ticket *{box-sizing:border-box}
+.ticket-close{float:right;border:0;border-radius:50%;padding:8px 12px;cursor:pointer;font-size:20px}
+.ticket-logo{font-size:24px;font-weight:800;margin:8px 0 22px}
+.ticket-logo span{color:#e11d48}
+.ticket-status{background:#dcfce7;color:#166534;padding:7px 10px;border-radius:5px;font-size:11px;font-weight:bold}
+.ticket h2{font-size:26px;margin:18px 0 5px;overflow-wrap:anywhere}
+.ticket-muted{color:#777;font-size:13px}
+.ticket-divider{border-top:1px dashed #bbb;margin:22px 0}
+.ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 12px}
+.ticket-label{display:block;color:#777;font-size:10px;font-weight:bold;letter-spacing:.5px;margin-bottom:6px}
+.ticket-value{display:block;font-size:14px;overflow-wrap:anywhere}
+.ticket-bottom{display:flex;justify-content:space-between;gap:10px}
+.ticket-price{text-align:right}
+.ticket-price strong{color:#e11d48;font-size:25px}
+.ticket-warning{font-size:10px;font-weight:bold;color:#a16207;line-height:1.5;max-width:220px}
+.ticket-qr{display:flex;justify-content:center;align-items:center;margin:20px auto 10px;min-height:145px}
+.ticket-qr img,.ticket-qr canvas{max-width:100%;height:auto}
+.ticket-qr-note{text-align:center;color:#777;font-size:11px}
+.ticket-actions{display:flex;gap:10px;margin-top:20px}
+.ticket-actions button{flex:1;padding:12px;border:0;border-radius:8px;cursor:pointer;font-weight:bold}
+.print-button{background:#e11d48;color:white}
+.close-button{background:#eee;color:#222}
+.demo-label{font-size:10px;color:#fda4af}
+@media(max-width:380px){.ticket{padding:19px}}
+@media print{
+ body *{visibility:hidden!important}
+ #ticketOverlay,#ticketOverlay *{visibility:visible!important}
+ #ticketOverlay{display:block!important;position:absolute;inset:0;background:white;padding:0;overflow:visible}
+ .ticket{max-width:100%;box-shadow:none}
+ .ticket-actions,.ticket-close{display:none!important}
+}
+</style>
 </head>
 <body>
+<header class="topbar">
+  <a class="logo" href="#">Picture<span>Dekho</span></a>
+  <div class="header-right">
+    <span class="city">📍 Prayagraj</span>
+    <input id="search" type="search" placeholder="Search movies..." aria-label="Search movies">
+  </div>
+</header>
 
-  <header class="topbar">
-    <a class="logo" href="#">Picture<span>Dekho</span></a>
-    <div class="header-right">
-      <span class="city">📍 Prayagraj</span>
-      <input id="search" type="search" placeholder="Search movies..." aria-label="Search movies">
+<main class="container">
+  <section class="hero" id="hero">
+    <img id="bannerImage" src="banners/ramayana.jpg" alt="Movie banner">
+    <div class="hero-shade"></div>
+    <div class="hero-content">
+      <span class="eyebrow">YOUR CINEMA EXPERIENCE</span>
+      <h1 id="bannerTitle">Ramayana</h1>
+      <p id="bannerDescription">Discover your next big-screen experience.</p>
+      <button id="bannerBook" class="primary-button">Explore Movies</button>
     </div>
-  </header>
+    <button id="bannerPrev" class="arrow arrow-left" aria-label="Previous banner">‹</button>
+    <button id="bannerNext" class="arrow arrow-right" aria-label="Next banner">›</button>
+    <div id="bannerDots" class="banner-dots"></div>
+  </section>
 
-  <main class="container">
+  <section id="movies-section">
+    <div class="section-heading">
+      <div><h2>Now Showing &amp; Upcoming</h2><p>Find a movie for your next cinema visit.</p></div>
+    </div>
+    <div id="movies" class="movie-grid"></div>
+    <p id="noResults" hidden>No matching movies found.</p>
+  </section>
 
-    <section class="hero" id="hero">
-      <img id="bannerImage" src="banners/ramayana.jpg"
-           alt="Featured movie banner">
-      <div class="hero-shade"></div>
-      <div class="hero-content">
-        <span class="eyebrow">YOUR CINEMA EXPERIENCE</span>
-        <h1 id="bannerTitle">Ramayana</h1>
-        <p id="bannerDescription">Discover your next big-screen experience.</p>
-        <button id="bannerBook" class="primary-button">Explore Movies</button>
+  <section id="booking" class="booking-panel">
+    <div class="booking-header">
+      <div>
+        <span class="eyebrow">YOUR MOVIE NIGHT</span>
+        <h2 id="booking-title">Book your tickets</h2>
+        <p id="booking-subtitle">Choose a demo cinema and showtime.</p>
       </div>
-      <button id="bannerPrev" class="arrow arrow-left" aria-label="Previous banner">‹</button>
-      <button id="bannerNext" class="arrow arrow-right" aria-label="Next banner">›</button>
-      <div id="bannerDots" class="banner-dots"></div>
-    </section>
-
-    <section id="movies-section">
-      <div class="section-heading">
-        <div>
-          <h2>Now Showing & Upcoming</h2>
-          <p>Find a movie for your next cinema visit.</p>
-        </div>
+      <button id="closeBooking" class="close-button" type="button">✕</button>
+    </div>
+    <h3>Choose a cinema</h3>
+    <div id="cinemas" class="cinema-list"></div>
+    <h3>Choose a showtime</h3>
+    <div id="showtimes" class="showtimes"></div>
+    <div id="seat-area" class="seat-area">
+      <h3>Select your seats</h3>
+      <p>Choose available seats below.</p>
+      <div class="screen">SCREEN THIS WAY</div>
+      <div id="seats" class="seats"></div>
+      <div class="seat-legend">
+        <span><i class="legend-seat available"></i> Available</span>
+        <span><i class="legend-seat selected"></i> Selected</span>
+        <span><i class="legend-seat booked"></i> Booked</span>
       </div>
-      <div id="movies" class="movie-grid"></div>
-      <p id="noResults" class="empty-message" hidden>No matching movies found.</p>
-    </section>
-
-    <section id="booking" class="booking-panel">
-      <div class="booking-header">
-        <div>
-          <span class="eyebrow">YOUR MOVIE NIGHT</span>
-          <h2 id="booking-title">Book your tickets</h2>
-          <p id="booking-subtitle">Choose a cinema and showtime.</p>
-        </div>
-        <button id="closeBooking" class="close-button" aria-label="Close booking">✕</button>
+      <div class="checkout">
+        <div><span>Selected seats</span><strong id="selected-label">None</strong></div>
+        <div><span>Total amount</span><strong id="total">₹0</strong></div>
+        <button id="confirmBooking" class="primary-button" type="button">Confirm Demo Booking</button>
       </div>
+      <p class="demo-note">Demo only. No payment is collected and no real cinema seats are reserved.</p>
+    </div>
+  </section>
+</main>
 
-      <h3>Choose a cinema</h3>
-      <div id="cinemas" class="cinema-list"></div>
+<footer>
+  <a class="logo footer-logo" href="#">Picture<span>Dekho</span></a>
+  <p>Discover movies. Plan your cinema experience.</p>
+  <p class="demo-note">Independent demo project. Not affiliated with BookMyShow.</p>
+</footer>
 
-      <h3>Choose a showtime</h3>
-      <div id="showtimes" class="showtimes"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-      <div id="seat-area" class="seat-area">
-        <h3 id="seat-heading">Select your seats</h3>
-        <p id="seat-subheading">Select available seats below.</p>
-
-        <div class="screen">SCREEN THIS WAY</div>
-        <div id="seats" class="seats"></div>
-
-        <div class="seat-legend">
-          <span><i class="legend-seat available"></i> Available</span>
-          <span><i class="legend-seat selected"></i> Selected</span>
-          <span><i class="legend-seat booked"></i> Booked</span>
-        </div>
-
-        <div class="checkout">
-          <div>
-            <span>Selected seats</span>
-            <strong id="selected-label">None</strong>
-          </div>
-          <div>
-            <span>Total amount</span>
-            <strong id="total">₹0</strong>
-          </div>
-          <button id="confirmBooking" class="primary-button">Confirm Demo Booking</button>
-        </div>
-        <p class="demo-note">Demo only. No payment is collected and seats are not reserved in a real cinema.</p>
+<!-- Demo ticket popup -->
+<div id="ticketOverlay" class="ticket-overlay" hidden>
+  <section class="ticket" role="dialog" aria-modal="true" aria-label="Demo ticket">
+    <button id="closeTicket" class="ticket-close" type="button" aria-label="Close">×</button>
+    <div class="ticket-logo">🎬 Picture<span>Dekho</span></div>
+    <span class="ticket-status">✓ DEMO BOOKING CONFIRMED</span>
+    <h2 id="ticketMovie">Movie name</h2>
+    <p class="ticket-muted">Your cinema experience awaits!</p>
+    <div class="ticket-divider"></div>
+    <div class="ticket-grid">
+      <div><span class="ticket-label">CINEMA HALL</span><strong class="ticket-value" id="ticketCinema"></strong></div>
+      <div><span class="ticket-label">SHOWTIME</span><strong class="ticket-value" id="ticketTime"></strong></div>
+      <div><span class="ticket-label">DATE</span><strong class="ticket-value" id="ticketDate"></strong></div>
+      <div><span class="ticket-label">SEATS</span><strong class="ticket-value" id="ticketSeats"></strong></div>
+    </div>
+    <div class="ticket-divider"></div>
+    <div class="ticket-bottom">
+      <div>
+        <span class="ticket-label">BOOKING ID</span>
+        <strong class="ticket-value" id="ticketId"></strong>
+        <p class="ticket-warning">DEMO ONLY — NOT VALID FOR REAL CINEMA ENTRY</p>
       </div>
-    </section>
+      <div class="ticket-price"><span class="ticket-label">TOTAL</span><strong id="ticketTotal"></strong></div>
+    </div>
+    <div id="ticketQR" class="ticket-qr"></div>
+    <p class="ticket-qr-note">QR code contains your demo booking details.</p>
+    <div class="ticket-actions">
+      <button id="printTicket" class="print-button" type="button">Print Ticket</button>
+      <button id="closeTicket2" class="close-button" type="button">Close</button>
+    </div>
+  </section>
+</div>
 
-  </main>
+<script>
+"use strict";
 
-  <footer>
-    <a class="logo footer-logo" href="#">Picture<span>Dekho</span></a>
-    <p>Discover movies. Plan your cinema experience.</p>
-    <p class="demo-note">Independent demo project. Not affiliated with BookMyShow.</p>
-  </footer>
+const movies = [
+ {title:"Ramayana",genre:"Action · Adventure · Mythology",language:"Hindi · Tamil · Telugu",image:"banners/ramayana.jpg"},
+ {title:"Udta Teer",genre:"Action · Comedy",language:"Hindi",image:"banners/udta-teer.jpg"},
+ {title:"Rajini: The Jailer 2",genre:"Action · Thriller",language:"Hindi",image:"banners/jailer-2.jpg"},
+ {title:"Drishyam The Conclusion",genre:"Drama · Mystery · Thriller",language:"Hindi",image:"banners/drishyam-conclusion.jpg"},
+ {title:"The Vvaan - Force of the Forrest",genre:"Action · Adventure · Fantasy",language:"Hindi",image:"banners/vvaan.jpg"},
+ {title:"Hanuman Ansh",genre:"Devotional · Drama",language:"Hindi",image:"banners/hanuman-ansh.jpg"},
+ {title:"Nayyi Navelli",genre:"Drama",language:"Hindi",image:"banners/nayyi-navelli.jpg"},
+ {title:"Nakhrewaalii",genre:"Romance · Comedy",language:"Hindi",image:"banners/nakhrewaalii.jpg"},
+ {title:"Pehla Pyaar Doosri Baar",genre:"Romance",language:"Hindi",image:"banners/pehla-pyaar.jpg"},
+ {title:"Pyre",genre:"Drama",language:"Hindi",image:"banners/pyre.jpg"},
+ {title:"Prahaar",genre:"Drama · Biography",language:"Hindi",image:"banners/prahaar.jpg"},
+ {title:"Clayface",genre:"Horror",language:"English · Hindi",image:"banners/clayface.jpg"}
+];
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+const cinemas = ["Vedant PVR","Ashish Palace","Sangam Palace"];
+const times = ["11:00 AM","2:30 PM","6:00 PM","9:15 PM"];
+const price = 180;
+const $ = id => document.getElementById(id);
 
+let activeMovie = movies[0];
+let activeCinema = cinemas[0];
+let activeTime = times[0];
+let selectedSeats = [];
+let bookedSeats = ["A3","B7","C5","D2","E9","F4"];
+let bannerIndex = 0;
+let toastTimer;
+
+function toast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2500);
+}
+
+function renderMovies(filter="") {
+  const list = $("movies");
+  list.replaceChildren();
+  const matches = movies.filter(m => (m.title+" "+m.genre+" "+m.language).toLowerCase().includes(filter.toLowerCase()));
+  $("noResults").hidden = matches.length > 0;
+
+  matches.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "movie-card";
+    const poster = document.createElement("div");
+    poster.className = "movie-poster";
+    const fallback = document.createElement("div");
+    fallback.className = "poster-fallback";
+    fallback.textContent = movie.title;
+    poster.appendChild(fallback);
+
+    const img = document.createElement("img");
+    img.src = movie.image;
+    img.alt = movie.title + " poster";
+    img.loading = "lazy";
+    img.onload = () => fallback.style.display = "none";
+    img.onerror = () => { img.style.display = "none"; fallback.style.display = "flex"; };
+    poster.appendChild(img);
+
+    const info = document.createElement("div");
+    info.className = "movie-info";
+    const h = document.createElement("h3");
+    h.textContent = movie.title;
+    const details = document.createElement("p");
+    details.textContent = movie.genre + " · " + movie.language;
+    const rating = document.createElement("div");
+    rating.className = "movie-rating";
+    rating.textContent = "Demo movie listing";
+    const button = document.createElement("button");
+    button.className = "book-button";
+    button.textContent = "Explore Shows";
+    button.onclick = () => openBooking(movie);
+    info.append(h,details,rating,button);
+    card.append(poster,info);
+    list.appendChild(card);
+  });
+}
+
+$("search").addEventListener("input", e => renderMovies(e.target.value));
+
+function showBanner(index) {
+  bannerIndex = (index + movies.length) % movies.length;
+  const movie = movies[bannerIndex];
+  $("bannerTitle").textContent = movie.title;
+  $("bannerDescription").textContent = movie.genre + " | " + movie.language;
+  const img = $("bannerImage");
+  img.src = movie.image;
+  img.alt = movie.title + " banner";
+  img.style.display = "block";
+  img.onerror = () => img.style.display = "none";
+  [...$("bannerDots").children].forEach((dot,i) => dot.classList.toggle("active",i===bannerIndex));
+}
+
+movies.forEach((movie,index) => {
+  const dot = document.createElement("button");
+  dot.type = "button";
+  dot.className = "banner-dot";
+  dot.setAttribute("aria-label","Show "+movie.title);
+  dot.onclick = () => showBanner(index);
+  $("bannerDots").appendChild(dot);
+});
+
+$("bannerPrev").onclick = () => showBanner(bannerIndex-1);
+$("bannerNext").onclick = () => showBanner(bannerIndex+1);
+$("bannerBook").onclick = () => $("movies-section").scrollIntoView({behavior:"smooth"});
+showBanner(0);
+setInterval(() => { if (!document.hidden) showBanner(bannerIndex+1); },6000);
+
+function openBooking(movie) {
+  activeMovie = movie;
+  activeCinema = cinemas[0];
+  activeTime = times[0];
+  selectedSeats = [];
+  $("booking-title").textContent = movie.title;
+  $("booking-subtitle").textContent = "Choose a demo cinema and showtime in Prayagraj.";
+  $("booking").classList.add("show");
+  $("seat-area").classList.add("show");
+  renderCinemas();
+  renderTimes();
+  renderSeats();
+  $("booking").scrollIntoView({behavior:"smooth"});
+}
+
+$("closeBooking").onclick = () => $("booking").classList.remove("show");
+
+function renderCinemas() {
+  $("cinemas").replaceChildren();
+  cinemas.forEach(cinema => {
+    const b = document.createElement("button");
+    b.className = "cinema-option" + (cinema===activeCinema ? " active" : "");
+    b.textContent = cinema;
+    b.onclick = () => { activeCinema=cinema; selectedSeats=[]; renderCinemas(); renderSeats(); };
+    $("cinemas").appendChild(b);
+  });
+}
+
+function renderTimes() {
+  $("showtimes").replaceChildren();
+  times.forEach(time => {
+    const b = document.createElement("button");
+    b.className = "time-option" + (time===activeTime ? " active" : "");
+    b.textContent = time;
+    b.onclick = () => { activeTime=time; selectedSeats=[]; renderTimes(); renderSeats(); };
+    $("showtimes").appendChild(b);
+  });
+}
+
+function renderSeats() {
+  $("seats").replaceChildren();
+  ["A","B","C","D","E","F"].forEach(row => {
+    for (let n=1;n<=10;n++) {
+      const seat=row+n;
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="seat";
+      b.textContent=seat;
+      if (bookedSeats.includes(seat)) {
+        b.classList.add("booked");
+        b.disabled=true;
+      } else if (selectedSeats.includes(seat)) {
+        b.classList.add("selected");
+      }
+      b.onclick=()=>{
+        selectedSeats=selectedSeats.includes(seat)
+          ? selectedSeats.filter(s=>s!==seat)
+          : [...selectedSeats,seat];
+        renderSeats();
+      };
+      $("seats").appendChild(b);
+    }
+  });
+  $("selected-label").textContent=selectedSeats.length ? selectedSeats.join(", ") : "None";
+  $("total").textContent="₹"+selectedSeats.length*price;
+}
+
+function loadQrLibrary() {
+  return new Promise(resolve => {
+    if (window.QRCode) return resolve(true);
+    const script=document.createElement("script");
+    script.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+    script.onload=()=>resolve(!!window.QRCode);
+    script.onerror=()=>resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+$("confirmBooking").onclick = async () => {
+  if (!selectedSeats.length) {
+    toast("Please select at least one seat.");
+    return;
+  }
+
+  const seats=[...selectedSeats];
+  const ticket={
+    bookingId:"PD"+Date.now().toString().slice(-8),
+    movie:activeMovie.title,
+    cinema:activeCinema,
+    showtime:activeTime,
+    date:new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}),
+    seats,
+    total:seats.length*price
+  };
+
+  $("ticketMovie").textContent=ticket.movie;
+  $("ticketCinema").textContent=ticket.cinema;
+  $("ticketTime").textContent=ticket.showtime;
+  $("ticketDate").textContent=ticket.date;
+  $("ticketSeats").textContent=ticket.seats.join(", ");
+  $("ticketId").textContent=ticket.bookingId;
+  $("ticketTotal").textContent="₹"+ticket.total;
+  $("ticketQR").replaceChildren();
+  $("ticketOverlay").hidden=false;
+
+  const qrReady=await loadQrLibrary();
+  if (!$("ticketOverlay").hidden && qrReady && window.QRCode) {
+    new QRCode($("ticketQR"),{
+      text:JSON.stringify(ticket),
+      width:140,
+      height:140,
+      correctLevel:QRCode.CorrectLevel.M
+    });
+  } else if (!qrReady) {
+    $("ticketQR").textContent="QR unavailable. Check your internet connection.";
+  }
+
+  seats.forEach(seat=>{if(!bookedSeats.includes(seat)) bookedSeats.push(seat);});
+  selectedSeats=[];
+  renderSeats();
+};
+
+function closeTicket() { $("ticketOverlay").hidden=true; }
+$("closeTicket").onclick=closeTicket;
+$("closeTicket2").onclick=closeTicket;
+$("printTicket").onclick=()=>window.print();
+$("ticketOverlay").addEventListener("click",e=>{if(e.target===$("ticketOverlay"))closeTicket();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTicket();});
+
+renderMovies();
+</script>
 </body>
 </html>
