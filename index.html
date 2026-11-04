@@ -4,536 +4,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>PictureDekho - Movies, Showtimes & Tickets</title>
-
-  <meta name="description" content="Explore movies, browse demo cinema showtimes and select seats on PictureDekho.">
-  <meta name="theme-color" content="#101116">
-
+  <title>PictureDekho | Book Movie Tickets</title>
+  <meta name="description" content="Discover movies and explore cinema ticket bookings on PictureDekho.">
   <link rel="stylesheet" href="style.css">
-
-  <style>
-    /* Core layout to ensure the booking interface is visible */
-    body {
-      margin: 0;
-      background: #101116;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 24px;
-      background: #101116;
-      border-bottom: 1px solid #30323d;
-    }
-
-    .brand {
-      font-size: 27px;
-      font-weight: 800;
-      color: white;
-      text-decoration: none;
-    }
-
-    .brand span {
-      color: #f43f62;
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    select, input {
-      padding: 12px;
-      color: white;
-      background: #20212a;
-      border: 1px solid #373947;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    input {
-      width: min(220px, 35vw);
-    }
-
-    main {
-      max-width: 1400px;
-      margin: auto;
-      padding: 26px;
-    }
-
-    .section-heading {
-      margin: 0 0 22px;
-      font-size: 25px;
-    }
-
-    #movies {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .movie {
-      overflow: hidden;
-      background: #1a1b23;
-      border: 1px solid #333541;
-      border-radius: 14px;
-    }
-
-    .poster {
-      display: block;
-      width: 100%;
-      height: 360px;
-      object-fit: cover;
-      background: #292a32;
-    }
-
-    .movie-info {
-      padding: 14px;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 5px 8px;
-      color: #ffb9c7;
-      background: #35232d;
-      border-radius: 5px;
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    .movie h3 {
-      margin: 10px 0;
-      font-size: 19px;
-    }
-
-    .meta, .muted {
-      color: #b9bdcb;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    button {
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .primary {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px;
-      color: white;
-      background: #f43f62;
-      border: 0;
-      border-radius: 9px;
-      font-weight: 700;
-    }
-
-    .primary:hover {
-      background: #df2d51;
-    }
-
-    #booking {
-      display: none;
-      margin-top: 38px;
-      padding: 22px;
-      background: #1a1b23;
-      border: 1px solid #343643;
-      border-radius: 14px;
-    }
-
-    #booking.show, #seat-area.show {
-      display: block;
-    }
-
-    .booking-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .close-button {
-      padding: 8px 12px;
-      color: white;
-      background: #30313b;
-      border: 1px solid #444654;
-      border-radius: 8px;
-    }
-
-    #booking-subtitle, #seat-subheading {
-      color: #b9bdcb;
-      line-height: 1.6;
-    }
-
-    .demo-notice {
-      margin: 16px 0;
-      padding: 12px;
-      color: #ffe3a1;
-      background: #30291b;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .cinema {
-      margin-top: 16px;
-      padding: 16px;
-      background: #22232d;
-      border: 1px solid #373947;
-      border-radius: 10px;
-    }
-
-    .cinema-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      font-weight: 700;
-    }
-
-    .shows {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .showtime {
-      padding: 10px 14px;
-      color: #9ce3b1;
-      background: #1b2724;
-      border: 1px solid #367354;
-      border-radius: 8px;
-    }
-
-    .showtime.active {
-      color: white;
-      background: #e83d61;
-      border-color: #e83d61;
-    }
-
-    #seat-area {
-      display: none;
-      margin-top: 28px;
-    }
-
-    .screen {
-      max-width: 420px;
-      margin: 28px auto;
-      padding: 12px;
-      color: #d6d8e2;
-      background: #30313b;
-      border-radius: 50% 50% 8px 8px / 25% 25% 8px 8px;
-      text-align: center;
-      letter-spacing: 4px;
-      font-size: 12px;
-    }
-
-    .seat-legend {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin: 20px 0;
-      color: #d4d6e0;
-      font-size: 12px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .legend-box {
-      width: 15px;
-      height: 15px;
-      background: #252731;
-      border: 1px solid #777b8b;
-      border-radius: 4px;
-    }
-
-    .legend-box.booked {
-      background: #777b85;
-      border-color: #777b85;
-    }
-
-    .legend-box.selected {
-      background: #f43f62;
-      border-color: #f43f62;
-    }
-
-    #seats {
-      display: grid;
-      grid-template-columns: repeat(10, minmax(0, 1fr));
-      gap: 9px;
-      max-width: 540px;
-      margin: auto;
-    }
-
-    .seat {
-      min-width: 0;
-      min-height: 36px;
-      padding: 5px 1px;
-      color: #e2e5ef;
-      background: #252731;
-      border: 1px solid #727687;
-      border-radius: 5px;
-      font-size: 11px;
-    }
-
-    .seat:hover:not(:disabled) {
-      border-color: #f43f62;
-    }
-
-    .seat.selected {
-      color: white;
-      background: #f43f62;
-      border-color: #f43f62;
-    }
-
-    .seat.booked {
-      overflow: hidden;
-      color: white;
-      background: #777b85;
-      border-color: #777b85;
-      font-size: 8px;
-      cursor: not-allowed;
-    }
-
-    .summary {
-      max-width: 540px;
-      margin: 24px auto 0;
-      padding: 18px;
-      background: #242530;
-      border-radius: 10px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 10px 0;
-    }
-
-    #selected-label {
-      overflow-wrap: anywhere;
-      text-align: right;
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 25px;
-      color: #c5c8d3;
-    }
-
-    #toast {
-      display: none;
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 20;
-      max-width: 350px;
-      padding: 16px;
-      color: white;
-      background: #30313b;
-      border: 1px solid #515362;
-      border-radius: 10px;
-      box-shadow: 0 8px 30px #0006;
-    }
-
-    #toast.show {
-      display: block;
-    }
-
-    footer {
-      padding: 28px 20px;
-      color: #aeb2c1;
-      text-align: center;
-      font-size: 13px;
-    }
-
-    @media (max-width: 900px) {
-      #movies {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .poster {
-        height: 300px;
-      }
-    }
-
-    @media (max-width: 520px) {
-      header {
-        padding: 12px;
-        flex-wrap: wrap;
-      }
-
-      .brand {
-        font-size: 23px;
-      }
-
-      .header-controls {
-        width: 100%;
-      }
-
-      .header-controls select {
-        max-width: 115px;
-      }
-
-      .header-controls input {
-        flex: 1;
-        width: 100%;
-        min-width: 0;
-      }
-
-      main {
-        padding: 16px 10px;
-      }
-
-      #movies {
-        gap: 10px;
-      }
-
-      .poster {
-        height: 230px;
-      }
-
-      .movie-info {
-        padding: 10px;
-      }
-
-      .movie h3 {
-        font-size: 16px;
-      }
-
-      #booking {
-        padding: 14px 10px;
-      }
-
-      #seats {
-        gap: 5px;
-      }
-
-      .seat {
-        min-height: 32px;
-        font-size: 9px;
-      }
-
-      .seat.booked {
-        font-size: 6px;
-      }
-    }
-  </style>
+  <script src="script.js" defer></script>
 </head>
-
 <body>
 
-  <header>
-    <a class="brand" href="./">Picture<span>Dekho</span></a>
-
-    <div class="header-controls">
-      <select id="city" aria-label="Select city">
-        <option value="Prayagraj">Prayagraj</option>
-      </select>
-
-      <input
-        id="search"
-        type="search"
-        placeholder="Search movies..."
-        aria-label="Search movies"
-      >
+  <header class="topbar">
+    <a class="logo" href="#">Picture<span>Dekho</span></a>
+    <div class="header-right">
+      <span class="city">📍 Prayagraj</span>
+      <input id="search" type="search" placeholder="Search movies..." aria-label="Search movies">
     </div>
   </header>
 
-  <main>
-    <section id="home">
-      <h1 class="section-heading">Movies for the big screen</h1>
-      <p class="meta">
-        Discover movies and explore demo cinema showtimes.
-      </p>
+  <main class="container">
 
-      <div id="movies">
-        <p class="empty">Loading movies...</p>
+    <section class="hero" id="hero">
+      <img id="bannerImage" src="banners/ramayana.jpg"
+           alt="Featured movie banner">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <span class="eyebrow">YOUR CINEMA EXPERIENCE</span>
+        <h1 id="bannerTitle">Ramayana</h1>
+        <p id="bannerDescription">Discover your next big-screen experience.</p>
+        <button id="bannerBook" class="primary-button">Explore Movies</button>
       </div>
+      <button id="bannerPrev" class="arrow arrow-left" aria-label="Previous banner">‹</button>
+      <button id="bannerNext" class="arrow arrow-right" aria-label="Next banner">›</button>
+      <div id="bannerDots" class="banner-dots"></div>
     </section>
 
-    <section id="booking" aria-live="polite">
-      <div class="booking-top">
+    <section id="movies-section">
+      <div class="section-heading">
         <div>
-          <h2 id="booking-title">Select a movie</h2>
-          <p id="booking-subtitle"></p>
+          <h2>Now Showing & Upcoming</h2>
+          <p>Find a movie for your next cinema visit.</p>
         </div>
+      </div>
+      <div id="movies" class="movie-grid"></div>
+      <p id="noResults" class="empty-message" hidden>No matching movies found.</p>
+    </section>
 
-        <button class="close-button" onclick="closeBooking()">
-          Close
-        </button>
+    <section id="booking" class="booking-panel">
+      <div class="booking-header">
+        <div>
+          <span class="eyebrow">YOUR MOVIE NIGHT</span>
+          <h2 id="booking-title">Book your tickets</h2>
+          <p id="booking-subtitle">Choose a cinema and showtime.</p>
+        </div>
+        <button id="closeBooking" class="close-button" aria-label="Close booking">✕</button>
       </div>
 
-      <div class="demo-notice">
-        <strong>DEMO BOOKING ONLY</strong><br>
-        Cinema names, showtimes, seat availability and prices on this
-        page are fictional examples. No real cinema ticket is issued.
-      </div>
+      <h3>Choose a cinema</h3>
+      <div id="cinemas" class="cinema-list"></div>
 
-      <h3>Select a cinema and showtime</h3>
-      <div id="cinemas"></div>
+      <h3>Choose a showtime</h3>
+      <div id="showtimes" class="showtimes"></div>
 
-      <section id="seat-area">
-        <h3 id="seat-heading">Choose your seats</h3>
-        <p id="seat-subheading"></p>
+      <div id="seat-area" class="seat-area">
+        <h3 id="seat-heading">Select your seats</h3>
+        <p id="seat-subheading">Select available seats below.</p>
 
         <div class="screen">SCREEN THIS WAY</div>
+        <div id="seats" class="seats"></div>
 
         <div class="seat-legend">
-          <div class="legend-item">
-            <span class="legend-box"></span> Available
-          </div>
-          <div class="legend-item">
-            <span class="legend-box selected"></span> Selected
-          </div>
-          <div class="legend-item">
-            <span class="legend-box booked"></span> Booked
-          </div>
+          <span><i class="legend-seat available"></i> Available</span>
+          <span><i class="legend-seat selected"></i> Selected</span>
+          <span><i class="legend-seat booked"></i> Booked</span>
         </div>
 
-        <div id="seats"></div>
-
-        <div class="summary">
-          <div class="summary-row">
+        <div class="checkout">
+          <div>
             <span>Selected seats</span>
-            <strong id="selected-label">No seats selected</strong>
+            <strong id="selected-label">None</strong>
           </div>
-
-          <div class="summary-row">
+          <div>
             <span>Total amount</span>
             <strong id="total">₹0</strong>
           </div>
-
-          <button class="primary" onclick="confirmBooking()">
-            Confirm Demo Booking
-          </button>
+          <button id="confirmBooking" class="primary-button">Confirm Demo Booking</button>
         </div>
-      </section>
+        <p class="demo-note">Demo only. No payment is collected and seats are not reserved in a real cinema.</p>
+      </div>
     </section>
+
   </main>
 
   <footer>
-    <p>PictureDekho — Your movie discovery experience.</p>
-    <p>Demo project. Not affiliated with BookMyShow or any cinema chain.</p>
+    <a class="logo footer-logo" href="#">Picture<span>Dekho</span></a>
+    <p>Discover movies. Plan your cinema experience.</p>
+    <p class="demo-note">Independent demo project. Not affiliated with BookMyShow.</p>
   </footer>
 
-  <div id="toast" role="status" aria-live="polite"></div>
-
-  <script src="script.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 </body>
 </html>
