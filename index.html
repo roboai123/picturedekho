@@ -2,671 +2,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PictureDekho - Movies & Showtimes</title>
-<meta name="description" content="Discover movies and explore demo cinema showtimes with PictureDekho.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root {
-  --bg: #101116;
-  --panel: #191b23;
-  --panel2: #222530;
-  --text: #f7f7fb;
-  --muted: #a7abba;
-  --red: #f0445f;
-  --line: #303440;
-  --green: #20a36a;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
-}
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-.top {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: rgba(16,17,22,.96);
-  border-bottom: 1px solid var(--line);
-}
-.nav {
-  max-width: 1200px;
-  margin: auto;
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-.brand {
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: -1px;
-  white-space: nowrap;
-}
-.brand span { color: var(--red); }
-.city, .search {
-  background: var(--panel2);
-  border: 1px solid var(--line);
-  color: white;
-  padding: 11px;
-  border-radius: 9px;
-}
-.city { margin-left: auto; }
-.search { width: 220px; outline: none; }
-.hero {
-  max-width: 1200px;
-  margin: 24px auto 10px;
-  padding: 0 22px;
-}
-.hero-banner {
-  min-height: 300px;
-  border-radius: 18px;
-  overflow: hidden;
-  display: flex;
-  align-items: end;
-  padding: 30px;
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.92),rgba(0,0,0,.25)),
-    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1800&q=85")
-    center/cover;
-}
-.eyebrow {
-  color: #ffb8c3;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 2px;
-}
-.hero h1 {
-  font-size: clamp(34px,5vw,58px);
-  line-height: 1.05;
-  margin: 12px 0;
-}
-.hero p { color: #e0e0e5; max-width: 560px; }
-.primary, .secondary {
-  border: 0;
-  border-radius: 9px;
-  padding: 12px 17px;
-  font-weight: bold;
-}
-.primary { background: var(--red); color: white; }
-.primary:hover { background: #d92e4b; }
-.secondary {
-  background: var(--panel2);
-  color: white;
-  border: 1px solid var(--line);
-}
-main {
-  max-width: 1200px;
-  margin: 32px auto;
-  padding: 0 22px;
-}
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  gap: 16px;
-}
-.section-head h2 { margin: 0; font-size: 27px; }
-.section-head p { color: var(--muted); font-size: 14px; }
-.muted { color: var(--muted); font-size: 14px; }
-.movies {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 20px;
-}
-.movie {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  overflow: hidden;
-  transition: transform .2s;
-}
-.movie:hover { transform: translateY(-4px); }
-.poster {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  display: block;
-  background: #282a33;
-}
-.movie-info { padding: 14px; }
-.movie h3 { margin: 8px 0; font-size: 19px; }
-.meta {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-.movie .primary { width: 100%; padding: 11px; }
-.pill {
-  font-size: 10px;
-  background: #30202a;
-  color: #ffb8c3;
-  border-radius: 5px;
-  padding: 5px 7px;
-}
-.notice {
-  margin: 25px 0;
-  background: #252116;
-  border: 1px solid #655326;
-  color: #f3d994;
-  padding: 13px 15px;
-  border-radius: 9px;
-  font-size: 13px;
-  line-height: 1.6;
-}
-.booking {
-  display: none;
-  margin-top: 28px;
-  padding: 22px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 15px;
-}
-.booking.show { display: block; }
-.booking-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: start;
-}
-.booking h2 { margin: 0 0 8px; }
-.cinemas { display: grid; gap: 12px; margin-top: 18px; }
-.cinema {
-  background: #20222c;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 15px;
-}
-.cinema-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 13px;
-  font-weight: bold;
-}
-.shows { display: flex; gap: 9px; flex-wrap: wrap; }
-.showtime {
-  border: 1px solid #3b8068;
-  background: #142a23;
-  color: #81e4bb;
-  border-radius: 8px;
-  padding: 10px 13px;
-}
-.showtime.active {
-  background: var(--green);
-  color: white;
-}
-.seat-area {
-  display: none;
-  margin-top: 22px;
-  border-top: 1px solid var(--line);
-  padding-top: 22px;
-}
-.seat-area.show { display: block; }
-.screen {
-  height: 7px;
-  max-width: 520px;
-  margin: 24px auto 10px;
-  border-radius: 100%;
-  background: #c9d4e8;
-  box-shadow: 0 7px 22px #7ea7ff55;
-}
-.screen-label {
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-.seats {
-  display: grid;
-  grid-template-columns: repeat(10,minmax(24px,36px));
-  justify-content: center;
-  gap: 8px;
-  margin: 24px auto;
-}
-.seat {
-  aspect-ratio: 1;
-  border: 1px solid #267e5b;
-  border-radius: 6px;
-  background: #173d30;
-  color: #c5ffe5;
-  font-size: 11px;
-  padding: 0;
-}
-.seat.booked {
-  background: #6e303a;
-  border-color: #a74452;
-  color: white;
-  cursor: not-allowed;
-  font-size: 9px;
-}
-.seat.selected {
-  background: #456be5;
-  border-color: #91aaff;
-  color: white;
-}
-.legend {
-  display: flex;
-  justify-content: center;
-  gap: 17px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 12px;
-}
-.legend span { display: flex; align-items: center; gap: 6px; }
-.key {
-  width: 11px;
-  height: 11px;
-  border-radius: 3px;
-  display: inline-block;
-}
-.summary {
-  max-width: 580px;
-  margin: 18px auto 0;
-  background: #222530;
-  border-radius: 10px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.summary strong { font-size: 20px; }
-.footer {
-  border-top: 1px solid var(--line);
-  margin-top: 55px;
-  padding: 25px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-}
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  color: #15151b;
-  padding: 13px 18px;
-  border-radius: 9px;
-  box-shadow: 0 10px 40px #0008;
-  display: none;
-  z-index: 10;
-  max-width: 90%;
-}
-.toast.show { display: block; }
-@media(max-width:850px) {
-  .movies { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .search { width: 150px; }
-  .hero-banner { min-height: 250px; }
-}
-@media(max-width:520px) {
-  .nav { padding: 13px; gap: 10px; flex-wrap: wrap; }
-  .brand { font-size: 22px; }
-  .city { margin-left: auto; }
-  .search { order: 3; width: 100%; }
-  .hero, main { padding: 0 13px; }
-  .hero-banner { padding: 20px; min-height: 250px; }
-  .movies { gap: 12px; }
-  .movie-info { padding: 10px; }
-  .movie h3 { font-size: 16px; }
-  .booking { padding: 14px; }
-  .seats {
-    gap: 5px;
-    grid-template-columns: repeat(10,minmax(22px,30px));
-  }
-  .seat { font-size: 10px; }
-  .seat.booked { font-size: 8px; }
-}
-</style>
+  <title>PictureDekho - Movies, Showtimes & Tickets</title>
+
+  <meta name="description" content="Explore movies, browse demo cinema showtimes and select seats on PictureDekho.">
+  <meta name="theme-color" content="#101116">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Core layout to ensure the booking interface is visible */
+    body {
+      margin: 0;
+      background: #101116;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      background: #101116;
+      border-bottom: 1px solid #30323d;
+    }
+
+    .brand {
+      font-size: 27px;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: #f43f62;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    select, input {
+      padding: 12px;
+      color: white;
+      background: #20212a;
+      border: 1px solid #373947;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input {
+      width: min(220px, 35vw);
+    }
+
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 26px;
+    }
+
+    .section-heading {
+      margin: 0 0 22px;
+      font-size: 25px;
+    }
+
+    #movies {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .movie {
+      overflow: hidden;
+      background: #1a1b23;
+      border: 1px solid #333541;
+      border-radius: 14px;
+    }
+
+    .poster {
+      display: block;
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      background: #292a32;
+    }
+
+    .movie-info {
+      padding: 14px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 8px;
+      color: #ffb9c7;
+      background: #35232d;
+      border-radius: 5px;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .movie h3 {
+      margin: 10px 0;
+      font-size: 19px;
+    }
+
+    .meta, .muted {
+      color: #b9bdcb;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    button {
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      color: white;
+      background: #f43f62;
+      border: 0;
+      border-radius: 9px;
+      font-weight: 700;
+    }
+
+    .primary:hover {
+      background: #df2d51;
+    }
+
+    #booking {
+      display: none;
+      margin-top: 38px;
+      padding: 22px;
+      background: #1a1b23;
+      border: 1px solid #343643;
+      border-radius: 14px;
+    }
+
+    #booking.show, #seat-area.show {
+      display: block;
+    }
+
+    .booking-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .close-button {
+      padding: 8px 12px;
+      color: white;
+      background: #30313b;
+      border: 1px solid #444654;
+      border-radius: 8px;
+    }
+
+    #booking-subtitle, #seat-subheading {
+      color: #b9bdcb;
+      line-height: 1.6;
+    }
+
+    .demo-notice {
+      margin: 16px 0;
+      padding: 12px;
+      color: #ffe3a1;
+      background: #30291b;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .cinema {
+      margin-top: 16px;
+      padding: 16px;
+      background: #22232d;
+      border: 1px solid #373947;
+      border-radius: 10px;
+    }
+
+    .cinema-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .shows {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .showtime {
+      padding: 10px 14px;
+      color: #9ce3b1;
+      background: #1b2724;
+      border: 1px solid #367354;
+      border-radius: 8px;
+    }
+
+    .showtime.active {
+      color: white;
+      background: #e83d61;
+      border-color: #e83d61;
+    }
+
+    #seat-area {
+      display: none;
+      margin-top: 28px;
+    }
+
+    .screen {
+      max-width: 420px;
+      margin: 28px auto;
+      padding: 12px;
+      color: #d6d8e2;
+      background: #30313b;
+      border-radius: 50% 50% 8px 8px / 25% 25% 8px 8px;
+      text-align: center;
+      letter-spacing: 4px;
+      font-size: 12px;
+    }
+
+    .seat-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin: 20px 0;
+      color: #d4d6e0;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-box {
+      width: 15px;
+      height: 15px;
+      background: #252731;
+      border: 1px solid #777b8b;
+      border-radius: 4px;
+    }
+
+    .legend-box.booked {
+      background: #777b85;
+      border-color: #777b85;
+    }
+
+    .legend-box.selected {
+      background: #f43f62;
+      border-color: #f43f62;
+    }
+
+    #seats {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 9px;
+      max-width: 540px;
+      margin: auto;
+    }
+
+    .seat {
+      min-width: 0;
+      min-height: 36px;
+      padding: 5px 1px;
+      color: #e2e5ef;
+      background: #252731;
+      border: 1px solid #727687;
+      border-radius: 5px;
+      font-size: 11px;
+    }
+
+    .seat:hover:not(:disabled) {
+      border-color: #f43f62;
+    }
+
+    .seat.selected {
+      color: white;
+      background: #f43f62;
+      border-color: #f43f62;
+    }
+
+    .seat.booked {
+      overflow: hidden;
+      color: white;
+      background: #777b85;
+      border-color: #777b85;
+      font-size: 8px;
+      cursor: not-allowed;
+    }
+
+    .summary {
+      max-width: 540px;
+      margin: 24px auto 0;
+      padding: 18px;
+      background: #242530;
+      border-radius: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    #selected-label {
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 25px;
+      color: #c5c8d3;
+    }
+
+    #toast {
+      display: none;
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      max-width: 350px;
+      padding: 16px;
+      color: white;
+      background: #30313b;
+      border: 1px solid #515362;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px #0006;
+    }
+
+    #toast.show {
+      display: block;
+    }
+
+    footer {
+      padding: 28px 20px;
+      color: #aeb2c1;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      #movies {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .poster {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      header {
+        padding: 12px;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-size: 23px;
+      }
+
+      .header-controls {
+        width: 100%;
+      }
+
+      .header-controls select {
+        max-width: 115px;
+      }
+
+      .header-controls input {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+      }
+
+      main {
+        padding: 16px 10px;
+      }
+
+      #movies {
+        gap: 10px;
+      }
+
+      .poster {
+        height: 230px;
+      }
+
+      .movie-info {
+        padding: 10px;
+      }
+
+      .movie h3 {
+        font-size: 16px;
+      }
+
+      #booking {
+        padding: 14px 10px;
+      }
+
+      #seats {
+        gap: 5px;
+      }
+
+      .seat {
+        min-height: 32px;
+        font-size: 9px;
+      }
+
+      .seat.booked {
+        font-size: 6px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="top">
-  <nav class="nav">
-    <div class="brand">Picture<span>Dekho</span></div>
-    <select class="city" aria-label="Select city">
-      <option>Prayagraj</option>
-      <option>Lucknow</option>
-      <option>Delhi</option>
-      <option>Mumbai</option>
-    </select>
-    <input class="search" id="search" placeholder="Search movies..." aria-label="Search movies">
-  </nav>
-</header>
+  <header>
+    <a class="brand" href="./">Picture<span>Dekho</span></a>
 
-<section class="hero">
-  <div class="hero-banner">
-    <div>
-      <div class="eyebrow">Your next movie night starts here</div>
-      <h1>Lights. Camera.<br>PictureDekho.</h1>
-      <p>Discover movies, explore showtimes and choose your seats in this interactive demo.</p>
-      <button class="primary" onclick="document.getElementById('movies-title').scrollIntoView({behavior:'smooth'})">
-        Explore Movies
-      </button>
+    <div class="header-controls">
+      <select id="city" aria-label="Select city">
+        <option value="Prayagraj">Prayagraj</option>
+      </select>
+
+      <input
+        id="search"
+        type="search"
+        placeholder="Search movies..."
+        aria-label="Search movies"
+      >
     </div>
-  </div>
-</section>
+  </header>
 
-<main>
-  <div class="section-head">
-    <div>
-      <h2 id="movies-title">Now Showing</h2>
-      <p>Movies for the big screen</p>
-    </div>
-    <span class="muted">Demo experience</span>
-  </div>
+  <main>
+    <section id="home">
+      <h1 class="section-heading">Movies for the big screen</h1>
+      <p class="meta">
+        Discover movies and explore demo cinema showtimes.
+      </p>
 
-  <div class="movies" id="movies"></div>
-
-  <div class="notice">
-    DEMO ONLY: Cinema names, showtimes, seat availability and bookings are fictional.
-    No real tickets are issued and no payment is collected.
-  </div>
-
-  <section class="booking" id="booking">
-    <div class="booking-top">
-      <div>
-        <h2 id="booking-title">Choose a show</h2>
-        <div class="muted" id="booking-subtitle">Select a cinema and showtime.</div>
+      <div id="movies">
+        <p class="empty">Loading movies...</p>
       </div>
-      <button class="secondary" onclick="closeBooking()">Close ✕</button>
-    </div>
+    </section>
 
-    <div class="cinemas" id="cinemas"></div>
-
-    <div class="seat-area" id="seat-area">
-      <h3 id="seat-heading">Choose your seats</h3>
-      <div class="muted" id="seat-subheading">Available seats show only their seat number.</div>
-
-      <div class="screen"></div>
-      <div class="screen-label">SCREEN THIS WAY</div>
-
-      <div class="seats" id="seats"></div>
-
-      <div class="legend">
-        <span><i class="key" style="background:#173d30;border:1px solid #267e5b"></i>Available</span>
-        <span><i class="key" style="background:#6e303a"></i>Booked</span>
-        <span><i class="key" style="background:#456be5"></i>Your selection</span>
-      </div>
-
-      <div class="summary">
+    <section id="booking" aria-live="polite">
+      <div class="booking-top">
         <div>
-          <div class="muted" id="selected-label">No seats selected</div>
-          <strong id="total">₹0</strong>
+          <h2 id="booking-title">Select a movie</h2>
+          <p id="booking-subtitle"></p>
         </div>
-        <button class="primary" onclick="confirmBooking()">Confirm demo booking</button>
-      </div>
-    </div>
-  </section>
-</main>
 
-<footer class="footer">
-  © 2026 PictureDekho · Movie discovery & demo ticket booking
-</footer>
-<div class="toast" id="toast"></div>
-
-<script>
-const movies = [
-  {
-    id: 1,
-    title: "RRR",
-    genre: "Action · Drama",
-    language: "Telugu · Hindi · Tamil",
-    rating: "8.0",
-    poster: "https://image.tmdb.org/t/p/w500/wE0I6efAW4cDDmZQWtwD7q5L3j9.jpg"
-  },
-  {
-    id: 2,
-    title: "Oppenheimer",
-    genre: "Biography · Drama",
-    language: "English · Hindi",
-    rating: "8.3",
-    poster: "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg"
-  },
-  {
-    id: 3,
-    title: "Kalki 2898 AD",
-    genre: "Sci-Fi · Action",
-    language: "Telugu · Hindi",
-    rating: "7.5",
-    poster: "https://image.tmdb.org/t/p/w500/1k4gp0z6Y1H8QJ9pV5w0Q7l3xVQ.jpg"
-  },
-  {
-    id: 4,
-    title: "Stree 2",
-    genre: "Horror · Comedy",
-    language: "Hindi",
-    rating: "7.2",
-    poster: "https://image.tmdb.org/t/p/w500/4W7g8rT5Q0xZ9fJ2k6vL3bN1mPA.jpg"
-  }
-];
-
-const cinemas = ["Vedant PVR", "Ashish Palace", "Sangam Palace"];
-const times = ["11:00 AM", "2:30 PM", "6:00 PM", "9:15 PM"];
-
-let currentMovie = null;
-let currentCinema = "";
-let currentTime = "";
-let selected = new Set();
-let booked = {};
-const price = 180;
-
-function loadMovies(filter = "") {
-  const root = document.getElementById("movies");
-  root.innerHTML = "";
-
-  const found = movies.filter(m =>
-    m.title.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  if (!found.length) {
-    root.innerHTML = '<div class="muted">No movies match your search.</div>';
-    return;
-  }
-
-  found.forEach(m => {
-    const card = document.createElement("article");
-    card.className = "movie";
-
-    card.innerHTML = `
-      <img class="poster"
-        src="${m.poster}"
-        alt="${m.title} movie poster"
-        loading="lazy"
-        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80'">
-
-      <div class="movie-info">
-        <span class="pill">NOW SHOWING · DEMO</span>
-        <h3>${m.title}</h3>
-        <div class="meta">
-          ${m.genre}<br>
-          ${m.language}<br>
-          ★ ${m.rating} / 10
-        </div>
-        <button class="primary" onclick="openMovie(${m.id})">
-          View Showtimes
+        <button class="close-button" onclick="closeBooking()">
+          Close
         </button>
       </div>
-    `;
 
-    root.appendChild(card);
-  });
-}
-
-function openMovie(id) {
-  currentMovie = movies.find(m => m.id === id);
-  selected.clear();
-
-  document.getElementById("booking").classList.add("show");
-  document.getElementById("booking-title").textContent =
-    currentMovie.title + " — Showtimes";
-
-  document.getElementById("booking-subtitle").textContent =
-    currentMovie.genre + " · Fictional demo listings";
-
-  document.getElementById("seat-area").classList.remove("show");
-
-  document.getElementById("cinemas").innerHTML = cinemas.map((c, i) => `
-    <div class="cinema">
-      <div class="cinema-head">
-        <span>${c}</span>
-        <span class="muted">Screen ${i + 1} · Demo</span>
+      <div class="demo-notice">
+        <strong>DEMO BOOKING ONLY</strong><br>
+        Cinema names, showtimes, seat availability and prices on this
+        page are fictional examples. No real cinema ticket is issued.
       </div>
-      <div class="shows">
-        ${times.map(t => `
-          <button class="showtime" onclick="chooseShow('${c}','${t}',this)">
-            ${t}
+
+      <h3>Select a cinema and showtime</h3>
+      <div id="cinemas"></div>
+
+      <section id="seat-area">
+        <h3 id="seat-heading">Choose your seats</h3>
+        <p id="seat-subheading"></p>
+
+        <div class="screen">SCREEN THIS WAY</div>
+
+        <div class="seat-legend">
+          <div class="legend-item">
+            <span class="legend-box"></span> Available
+          </div>
+          <div class="legend-item">
+            <span class="legend-box selected"></span> Selected
+          </div>
+          <div class="legend-item">
+            <span class="legend-box booked"></span> Booked
+          </div>
+        </div>
+
+        <div id="seats"></div>
+
+        <div class="summary">
+          <div class="summary-row">
+            <span>Selected seats</span>
+            <strong id="selected-label">No seats selected</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Total amount</span>
+            <strong id="total">₹0</strong>
+          </div>
+
+          <button class="primary" onclick="confirmBooking()">
+            Confirm Demo Booking
           </button>
-        `).join("")}
-      </div>
-    </div>
-  `).join("");
+        </div>
+      </section>
+    </section>
+  </main>
 
-  document.getElementById("booking").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
+  <footer>
+    <p>PictureDekho — Your movie discovery experience.</p>
+    <p>Demo project. Not affiliated with BookMyShow or any cinema chain.</p>
+  </footer>
 
-function chooseShow(cinema, time, button) {
-  currentCinema = cinema;
-  currentTime = time;
-  selected.clear();
+  <div id="toast" role="status" aria-live="polite"></div>
 
-  document.querySelectorAll(".showtime").forEach(b =>
-    b.classList.remove("active")
-  );
+  <script src="script.js"></script>
 
-  button.classList.add("active");
-  document.getElementById("seat-area").classList.add("show");
-
-  document.getElementById("seat-heading").textContent =
-    cinema + " · " + time;
-
-  document.getElementById("seat-subheading").textContent =
-    "Movie: " + currentMovie.title + " · ₹" + price + " per seat · Demo only";
-
-  renderSeats();
-
-  document.getElementById("seat-area").scrollIntoView({
-    behavior: "smooth",
-    block: "nearest"
-  });
-}
-
-function showKey() {
-  return currentMovie.id + "|" + currentCinema + "|" + currentTime;
-}
-
-function renderSeats() {
-  const root = document.getElementById("seats");
-  root.innerHTML = "";
-
-  const key = showKey();
-
-  if (!booked[key]) {
-    booked[key] = new Set(["A3", "B7", "C5", "D2", "E9", "F4"]);
-  }
-
-  const rows = "ABCDEF";
-
-  for (const r of rows) {
-    for (let n = 1; n <= 10; n++) {
-      const id = r + n;
-      const b = document.createElement("button");
-
-      b.className = "seat";
-      b.textContent = id;
-      b.setAttribute("aria-label", "Seat " + id);
-
-      if (booked[key].has(id)) {
-        b.classList.add("booked");
-        b.textContent = "BOOKED";
-        b.disabled = true;
-        b.title = "This seat is booked in the demo";
-      } else if (selected.has(id)) {
-        b.classList.add("selected");
-        b.title = "Click to deselect";
-      } else {
-        b.title = "Available seat " + id;
-      }
-
-      b.onclick = () => {
-        if (selected.has(id)) {
-          selected.delete(id);
-        } else {
-          selected.add(id);
-        }
-        renderSeats();
-      };
-
-      root.appendChild(b);
-    }
-  }
-
-  document.getElementById("selected-label").textContent =
-    selected.size ? Array.from(selected).sort().join(", ") : "No seats selected";
-
-  document.getElementById("total").textContent =
-    "₹" + (selected.size * price);
-}
-
-function confirmBooking() {
-  if (!selected.size) {
-    toast("Please select at least one available seat.");
-    return;
-  }
-
-  const key = showKey();
-  const seats = Array.from(selected).sort();
-
-  selected.forEach(s => booked[key].add(s));
-
-  const code = "PD" + Math.random().toString(36).slice(2, 7).toUpperCase();
-
-  selected.clear();
-  renderSeats();
-
-  toast(
-    "Demo booking confirmed! " + seats.join(", ") +
-    " · Booking ID " + code
-  );
-
-  document.getElementById("booking-subtitle").textContent =
-    "Demo booking saved in this page · " + currentCinema + " · " + currentTime;
-}
-
-function closeBooking() {
-  document.getElementById("booking").classList.remove("show");
-}
-
-let toastTimer;
-
-function toast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("show"), 3500);
-}
-
-document.getElementById("search").addEventListener("input", e => {
-  loadMovies(e.target.value);
-});
-
-loadMovies();
-</script>
 </body>
 </html>
