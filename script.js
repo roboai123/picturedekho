@@ -2,34 +2,98 @@
 const movies = [
   {
     id: 1,
-    title: "Udta Teer",
-    genre: "Action · Comedy",
-    language: "Hindi",
-    rating: "8.2",
-    poster: "https://image.tmdb.org/t/p/w1280/tvICKypVlW7Iio4KVs7NousbSKi.jpg"
+    title: "Ramayana",
+    genre: "Action · Adventure · Mythological",
+    language: "Hindi · Tamil · Telugu",
+    rating: "Upcoming release",
+    poster: "https://image.tmdb.org/t/p/w500/ramayana.jpg"
   },
   {
     id: 2,
-    title: "Nayyi Navelli",
-    genre: "Drama · Musical",
+    title: "Udta Teer",
+    genre: "Comedy",
     language: "Hindi",
-    rating: "7.0",
-    poster: "https://m.media-amazon.com/images/M/MV5BZmJjYzUyMmYtNDgyNy00MzlkLWE1ZDAtZDFjNzgxYzQxOGY5XkEyXkFqcGc%40._V1_.jpg"
+    rating: "In cinemas",
+    poster: ""
   },
   {
     id: 3,
     title: "Hanuman Ansh",
     genre: "Drama · Devotional",
     language: "Hindi",
-    rating: "7.0",
-    poster: "https://cdn.teater.co/imgs/hanuman-ansh-2026_600_880.webp"
+    rating: "In cinemas",
+    poster: ""
   },
   {
     id: 4,
+    title: "Nayyi Navelli",
+    genre: "Drama",
+    language: "Hindi",
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 5,
+    title: "Nakhrewaalii",
+    genre: "Drama",
+    language: "Hindi",
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 6,
+    title: "Pehla Pyaar Doosri Baar",
+    genre: "Romance",
+    language: "Hindi",
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 7,
+    title: "Pyre",
+    genre: "Drama",
+    language: "Hindi",
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 8,
+    title: "Prahaar",
+    genre: "Drama · Biography",
+    language: "Hindi",
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 9,
     title: "Clayface",
     genre: "Horror",
     language: "Hindi",
-    rating: "7.0",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjNlMjM4NTAtYjE5YS00ZGYyLWEyMTYtNjFlMmIxZDEzYjhhXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg"
+    rating: "In cinemas",
+    poster: ""
+  },
+  {
+    id: 10,
+    title: "Rajini: The Jailer 2",
+    genre: "Action",
+    language: "Hindi",
+    rating: "Theatrical listing",
+    poster: ""
+  },
+  {
+    id: 11,
+    title: "Drishyam The Conclusion",
+    genre: "Thriller",
+    language: "Hindi",
+    rating: "Theatrical listing",
+    poster: ""
+  },
+  {
+    id: 12,
+    title: "The Vvaan - Force of the Forrest",
+    genre: "Fantasy",
+    language: "Hindi",
+    rating: "Theatrical listing",
+    poster: ""
   }
 ];
