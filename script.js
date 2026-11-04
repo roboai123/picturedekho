@@ -1,14 +1,17 @@
 
 const movies = [
-  { id: 1, title: "Ramayana", genre: "Mythology · Adventure", language: "Hindi · Telugu · Tamil", rating: "Upcoming", poster: "" },
-  { id: 2, title: "Udta Teer", genre: "Comedy", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 3, title: "Hanuman Ansh", genre: "Devotional · Drama", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 4, title: "Nayyi Navelli", genre: "Drama", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 5, title: "Nakhrewaalii", genre: "Romance · Comedy", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 6, title: "Pehla Pyaar Doosri Baar", genre: "Romance", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 7, title: "Pyre", genre: "Drama", language: "Regional", rating: "Check listings", poster: "" },
-  { id: 8, title: "Prahaar", genre: "Drama", language: "Hindi", rating: "Check listings", poster: "" },
-  { id: 9, title: "Clayface", genre: "Horror", language: "English · Hindi", rating: "Check listings", poster: "" }
+  { id: 1, title: "Ramayana", genre: "Action · Adventure · Mythology", language: "Hindi · Tamil · Telugu", rating: "BookMyShow listing" },
+  { id: 2, title: "Udta Teer", genre: "Action · Comedy", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 3, title: "Rajini: The Jailer 2", genre: "Action · Thriller", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 4, title: "Drishyam The Conclusion", genre: "Drama · Mystery · Thriller", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 5, title: "The Vvaan - Force of the Forrest", genre: "Action · Adventure · Fantasy", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 6, title: "Hanuman Ansh", genre: "Devotional · Drama", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 7, title: "Nayyi Navelli", genre: "Drama", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 8, title: "Nakhrewaalii", genre: "Romance · Comedy", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 9, title: "Pehla Pyaar Doosri Baar", genre: "Romance", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 10, title: "Pyre", genre: "Drama", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 11, title: "Prahaar", genre: "Drama · Biography", language: "Hindi", rating: "BookMyShow listing" },
+  { id: 12, title: "Clayface", genre: "Horror", language: "English · Hindi", rating: "BookMyShow listing" }
 ];
 
 const cinemas = [
@@ -25,6 +28,10 @@ let currentCinema = "";
 let currentTime = "";
 let selectedSeats = new Set();
 const bookedSeats = {};
+
+function cinemaPoster() {
+  return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80";
+}
 
 function loadMovies(filter = "") {
   const root = document.getElementById("movies");
@@ -49,27 +56,21 @@ function loadMovies(filter = "") {
     poster.className = "poster";
     poster.alt = movie.title + " poster";
     poster.loading = "lazy";
-    poster.src = movie.poster || cinemaPoster();
-
-    poster.onerror = () => {
-      poster.onerror = null;
-      poster.src = cinemaPoster();
-    };
+    poster.src = cinemaPoster();
 
     const info = document.createElement("div");
     info.className = "movie-info";
 
     const badge = document.createElement("span");
     badge.className = "pill";
-    badge.textContent = "DEMO LISTING";
+    badge.textContent = "MOVIE LISTING";
 
     const title = document.createElement("h3");
     title.textContent = movie.title;
 
     const details = document.createElement("div");
     details.className = "meta";
-    details.textContent =
-      movie.genre + " · " + movie.language + " · " + movie.rating;
+    details.textContent = movie.genre + " · " + movie.language;
 
     const button = document.createElement("button");
     button.className = "primary";
@@ -80,10 +81,6 @@ function loadMovies(filter = "") {
     card.append(poster, info);
     root.appendChild(card);
   });
-}
-
-function cinemaPoster() {
-  return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80";
 }
 
 function openMovie(id) {
@@ -118,9 +115,9 @@ function openMovie(id) {
   `).join("");
 
   document.querySelectorAll(".showtime").forEach(button => {
-    button.addEventListener("click", () => {
-      chooseShow(button.dataset.cinema, button.dataset.time, button);
-    });
+    button.addEventListener("click", () =>
+      chooseShow(button.dataset.cinema, button.dataset.time, button)
+    );
   });
 
   document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
@@ -135,7 +132,9 @@ function chooseShow(cinema, time, button) {
   currentTime = time;
   selectedSeats.clear();
 
-  document.querySelectorAll(".showtime").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".showtime").forEach(b =>
+    b.classList.remove("active")
+  );
   button.classList.add("active");
 
   document.getElementById("seat-area").classList.add("show");
@@ -221,6 +220,7 @@ let toastTimer;
 
 function showToast(message) {
   const toast = document.getElementById("toast");
+
   if (!toast) {
     alert(message);
     return;
@@ -234,6 +234,7 @@ function showToast(message) {
 }
 
 const search = document.getElementById("search");
+
 if (search) {
   search.addEventListener("input", e => loadMovies(e.target.value));
 }
