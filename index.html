@@ -5,14 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PictureDekho | Book Movie Tickets</title>
-<meta name="description" content="Discover movies and explore demo cinema showtimes on PictureDekho.">
+<meta name="description" content="Discover movies and explore cinema bookings on PictureDekho.">
 <link rel="stylesheet" href="style.css">
 <style>
 .ticket-overlay[hidden]{display:none!important}
-.ticket-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:15px;overflow:auto;font-family:Arial,sans-serif}
-.ticket{position:relative;background:#fff;color:#171923;width:100%;max-width:460px;margin:auto;padding:26px;border-radius:18px;box-sizing:border-box}
+.ticket-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto;font-family:Arial,sans-serif}
+.ticket{position:relative;background:white;color:#171923;width:100%;max-width:460px;margin:auto;padding:26px;border-radius:18px;box-sizing:border-box}
 .ticket *{box-sizing:border-box}
-.ticket-close{float:right;border:0;border-radius:50%;padding:8px 12px;cursor:pointer;font-size:20px}
+.ticket-close{float:right;border:0;border-radius:50%;padding:7px 12px;cursor:pointer;font-size:20px}
 .ticket-logo{font-size:24px;font-weight:800;margin:8px 0 22px}
 .ticket-logo span{color:#e11d48}
 .ticket-status{background:#dcfce7;color:#166534;padding:7px 10px;border-radius:5px;font-size:11px;font-weight:bold}
@@ -32,8 +32,8 @@
 .ticket-actions{display:flex;gap:10px;margin-top:20px}
 .ticket-actions button{flex:1;padding:12px;border:0;border-radius:8px;cursor:pointer;font-weight:bold}
 .print-button{background:#e11d48;color:white}
-.close-button{background:#eee;color:#222}
-.demo-label{font-size:10px;color:#fda4af}
+.ticket-close-bottom{background:#eee;color:#222}
+.ticket-overlay .ticket-close{background:#eee;color:#222}
 @media(max-width:380px){.ticket{padding:19px}}
 @media print{
  body *{visibility:hidden!important}
@@ -45,6 +45,7 @@
 </style>
 </head>
 <body>
+
 <header class="topbar">
   <a class="logo" href="#">Picture<span>Dekho</span></a>
   <div class="header-right">
@@ -54,59 +55,68 @@
 </header>
 
 <main class="container">
-  <section class="hero" id="hero">
-    <img id="bannerImage" src="banners/ramayana.jpg" alt="Movie banner">
-    <div class="hero-shade"></div>
-    <div class="hero-content">
-      <span class="eyebrow">YOUR CINEMA EXPERIENCE</span>
-      <h1 id="bannerTitle">Ramayana</h1>
-      <p id="bannerDescription">Discover your next big-screen experience.</p>
-      <button id="bannerBook" class="primary-button">Explore Movies</button>
-    </div>
-    <button id="bannerPrev" class="arrow arrow-left" aria-label="Previous banner">‹</button>
-    <button id="bannerNext" class="arrow arrow-right" aria-label="Next banner">›</button>
-    <div id="bannerDots" class="banner-dots"></div>
-  </section>
 
-  <section id="movies-section">
-    <div class="section-heading">
-      <div><h2>Now Showing &amp; Upcoming</h2><p>Find a movie for your next cinema visit.</p></div>
-    </div>
-    <div id="movies" class="movie-grid"></div>
-    <p id="noResults" hidden>No matching movies found.</p>
-  </section>
+<section class="hero" id="hero">
+  <img id="bannerImage" src="banners/ramayana.jpg" alt="Movie banner">
+  <div class="hero-shade"></div>
+  <div class="hero-content">
+    <span class="eyebrow">YOUR CINEMA EXPERIENCE</span>
+    <h1 id="bannerTitle">Ramayana</h1>
+    <p id="bannerDescription">Discover your next big-screen experience.</p>
+    <button id="bannerBook" class="primary-button" type="button">View Movies</button>
+  </div>
+  <button id="bannerPrev" class="arrow arrow-left" type="button" aria-label="Previous banner">‹</button>
+  <button id="bannerNext" class="arrow arrow-right" type="button" aria-label="Next banner">›</button>
+  <div id="bannerDots" class="banner-dots"></div>
+</section>
 
-  <section id="booking" class="booking-panel">
-    <div class="booking-header">
-      <div>
-        <span class="eyebrow">YOUR MOVIE NIGHT</span>
-        <h2 id="booking-title">Book your tickets</h2>
-        <p id="booking-subtitle">Choose a demo cinema and showtime.</p>
-      </div>
-      <button id="closeBooking" class="close-button" type="button">✕</button>
+<section id="movies-section">
+  <div class="section-heading">
+    <div>
+      <h2>Now Showing &amp; Upcoming</h2>
+      <p>Find a movie for your next cinema visit.</p>
     </div>
-    <h3>Choose a cinema</h3>
-    <div id="cinemas" class="cinema-list"></div>
-    <h3>Choose a showtime</h3>
-    <div id="showtimes" class="showtimes"></div>
-    <div id="seat-area" class="seat-area">
-      <h3>Select your seats</h3>
-      <p>Choose available seats below.</p>
-      <div class="screen">SCREEN THIS WAY</div>
-      <div id="seats" class="seats"></div>
-      <div class="seat-legend">
-        <span><i class="legend-seat available"></i> Available</span>
-        <span><i class="legend-seat selected"></i> Selected</span>
-        <span><i class="legend-seat booked"></i> Booked</span>
-      </div>
-      <div class="checkout">
-        <div><span>Selected seats</span><strong id="selected-label">None</strong></div>
-        <div><span>Total amount</span><strong id="total">₹0</strong></div>
-        <button id="confirmBooking" class="primary-button" type="button">Confirm Demo Booking</button>
-      </div>
-      <p class="demo-note">Demo only. No payment is collected and no real cinema seats are reserved.</p>
+  </div>
+  <div id="movies" class="movie-grid"></div>
+  <p id="noResults" hidden>No matching movies found.</p>
+</section>
+
+<section id="booking" class="booking-panel">
+  <div class="booking-header">
+    <div>
+      <span class="eyebrow">YOUR MOVIE NIGHT</span>
+      <h2 id="booking-title">Book your tickets</h2>
+      <p id="booking-subtitle">Choose a cinema and showtime.</p>
     </div>
-  </section>
+    <button id="closeBooking" class="close-button" type="button" aria-label="Close booking">✕</button>
+  </div>
+
+  <h3>Choose a cinema</h3>
+  <div id="cinemas" class="cinema-list"></div>
+
+  <h3>Choose a showtime</h3>
+  <div id="showtimes" class="showtimes"></div>
+
+  <div id="seat-area" class="seat-area">
+    <h3>Select your seats</h3>
+    <p>Select available seats below.</p>
+    <div class="screen">SCREEN THIS WAY</div>
+    <div id="seats" class="seats"></div>
+
+    <div class="seat-legend">
+      <span><i class="legend-seat available"></i> Available</span>
+      <span><i class="legend-seat selected"></i> Selected</span>
+      <span><i class="legend-seat booked"></i> Booked</span>
+    </div>
+
+    <div class="checkout">
+      <div><span>Selected seats</span><strong id="selected-label">None</strong></div>
+      <div><span>Total amount</span><strong id="total">₹0</strong></div>
+      <button id="confirmBooking" class="primary-button" type="button">Confirm Demo Booking</button>
+    </div>
+    <p class="demo-note">Demo only. No payment is collected and real cinema seats are not reserved.</p>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -117,10 +127,9 @@
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<!-- Demo ticket popup -->
 <div id="ticketOverlay" class="ticket-overlay" hidden>
   <section class="ticket" role="dialog" aria-modal="true" aria-label="Demo ticket">
-    <button id="closeTicket" class="ticket-close" type="button" aria-label="Close">×</button>
+    <button id="closeTicket" class="ticket-close" type="button" aria-label="Close ticket">×</button>
     <div class="ticket-logo">🎬 Picture<span>Dekho</span></div>
     <span class="ticket-status">✓ DEMO BOOKING CONFIRMED</span>
     <h2 id="ticketMovie">Movie name</h2>
@@ -145,7 +154,7 @@
     <p class="ticket-qr-note">QR code contains your demo booking details.</p>
     <div class="ticket-actions">
       <button id="printTicket" class="print-button" type="button">Print Ticket</button>
-      <button id="closeTicket2" class="close-button" type="button">Close</button>
+      <button id="closeTicketBottom" class="ticket-close-bottom" type="button">Close</button>
     </div>
   </section>
 </div>
@@ -168,224 +177,227 @@ const movies = [
  {title:"Clayface",genre:"Horror",language:"English · Hindi",image:"banners/clayface.jpg"}
 ];
 
-const cinemas = ["Vedant PVR","Ashish Palace","Sangam Palace"];
-const times = ["11:00 AM","2:30 PM","6:00 PM","9:15 PM"];
-const price = 180;
-const $ = id => document.getElementById(id);
+const cinemas=["Vedant PVR","Ashish Palace","Sangam Palace"];
+const times=["11:00 AM","2:30 PM","6:00 PM","9:15 PM"];
+const price=180;
+const $=id=>document.getElementById(id);
 
-let activeMovie = movies[0];
-let activeCinema = cinemas[0];
-let activeTime = times[0];
-let selectedSeats = [];
-let bookedSeats = ["A3","B7","C5","D2","E9","F4"];
-let bannerIndex = 0;
-let toastTimer;
+let activeMovie=movies[0],activeCinema=cinemas[0],activeTime=times[0];
+let selectedSeats=[],bookedSeats=["A3","B7","C5","D2","E9","F4"];
+let bannerIndex=0,toastTimer;
 
-function toast(message) {
-  $("toast").textContent = message;
-  $("toast").classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2500);
+function showToast(message){
+ $("toast").textContent=message;
+ $("toast").classList.add("show");
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2500);
 }
 
-function renderMovies(filter="") {
-  const list = $("movies");
-  list.replaceChildren();
-  const matches = movies.filter(m => (m.title+" "+m.genre+" "+m.language).toLowerCase().includes(filter.toLowerCase()));
-  $("noResults").hidden = matches.length > 0;
+function renderMovies(filter=""){
+ const list=$("movies");
+ list.replaceChildren();
+ const matches=movies.filter(m=>(m.title+" "+m.genre+" "+m.language).toLowerCase().includes(filter.toLowerCase()));
+ $("noResults").hidden=matches.length>0;
 
-  matches.forEach(movie => {
-    const card = document.createElement("article");
-    card.className = "movie-card";
-    const poster = document.createElement("div");
-    poster.className = "movie-poster";
-    const fallback = document.createElement("div");
-    fallback.className = "poster-fallback";
-    fallback.textContent = movie.title;
-    poster.appendChild(fallback);
+ matches.forEach(movie=>{
+  const card=document.createElement("article");
+  card.className="movie-card";
+  const poster=document.createElement("div");
+  poster.className="movie-poster";
+  const fallback=document.createElement("div");
+  fallback.className="poster-fallback";
+  fallback.textContent=movie.title;
+  poster.appendChild(fallback);
 
-    const img = document.createElement("img");
-    img.src = movie.image;
-    img.alt = movie.title + " poster";
-    img.loading = "lazy";
-    img.onload = () => fallback.style.display = "none";
-    img.onerror = () => { img.style.display = "none"; fallback.style.display = "flex"; };
-    poster.appendChild(img);
+  const img=document.createElement("img");
+  img.src=movie.image;
+  img.alt=movie.title+" poster";
+  img.loading="lazy";
+  img.onload=()=>fallback.style.display="none";
+  img.onerror=()=>{img.style.display="none";fallback.style.display="flex";};
+  poster.appendChild(img);
 
-    const info = document.createElement("div");
-    info.className = "movie-info";
-    const h = document.createElement("h3");
-    h.textContent = movie.title;
-    const details = document.createElement("p");
-    details.textContent = movie.genre + " · " + movie.language;
-    const rating = document.createElement("div");
-    rating.className = "movie-rating";
-    rating.textContent = "Demo movie listing";
-    const button = document.createElement("button");
-    button.className = "book-button";
-    button.textContent = "Explore Shows";
-    button.onclick = () => openBooking(movie);
-    info.append(h,details,rating,button);
-    card.append(poster,info);
-    list.appendChild(card);
-  });
+  const info=document.createElement("div");
+  info.className="movie-info";
+  const h=document.createElement("h3");
+  h.textContent=movie.title;
+  const details=document.createElement("p");
+  details.textContent=movie.genre+" · "+movie.language;
+  const rating=document.createElement("div");
+  rating.className="movie-rating";
+  rating.textContent="Demo movie listing";
+
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="book-button";
+  button.textContent="Book Ticket";
+  button.onclick=()=>openBooking(movie);
+
+  info.append(h,details,rating,button);
+  card.append(poster,info);
+  list.appendChild(card);
+ });
 }
 
-$("search").addEventListener("input", e => renderMovies(e.target.value));
+$("search").addEventListener("input",e=>renderMovies(e.target.value));
 
-function showBanner(index) {
-  bannerIndex = (index + movies.length) % movies.length;
-  const movie = movies[bannerIndex];
-  $("bannerTitle").textContent = movie.title;
-  $("bannerDescription").textContent = movie.genre + " | " + movie.language;
-  const img = $("bannerImage");
-  img.src = movie.image;
-  img.alt = movie.title + " banner";
-  img.style.display = "block";
-  img.onerror = () => img.style.display = "none";
-  [...$("bannerDots").children].forEach((dot,i) => dot.classList.toggle("active",i===bannerIndex));
+function showBanner(index){
+ bannerIndex=(index+movies.length)%movies.length;
+ const movie=movies[bannerIndex];
+ $("bannerTitle").textContent=movie.title;
+ $("bannerDescription").textContent=movie.genre+" | "+movie.language;
+ const img=$("bannerImage");
+ img.src=movie.image;
+ img.alt=movie.title+" banner";
+ img.style.display="block";
+ img.onerror=()=>img.style.display="none";
+ [...$("bannerDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===bannerIndex));
 }
 
-movies.forEach((movie,index) => {
-  const dot = document.createElement("button");
-  dot.type = "button";
-  dot.className = "banner-dot";
-  dot.setAttribute("aria-label","Show "+movie.title);
-  dot.onclick = () => showBanner(index);
-  $("bannerDots").appendChild(dot);
+movies.forEach((movie,index)=>{
+ const dot=document.createElement("button");
+ dot.type="button";
+ dot.className="banner-dot";
+ dot.setAttribute("aria-label","Show "+movie.title);
+ dot.onclick=()=>showBanner(index);
+ $("bannerDots").appendChild(dot);
 });
 
-$("bannerPrev").onclick = () => showBanner(bannerIndex-1);
-$("bannerNext").onclick = () => showBanner(bannerIndex+1);
-$("bannerBook").onclick = () => $("movies-section").scrollIntoView({behavior:"smooth"});
+$("bannerPrev").onclick=()=>showBanner(bannerIndex-1);
+$("bannerNext").onclick=()=>showBanner(bannerIndex+1);
+$("bannerBook").onclick=()=>$("movies-section").scrollIntoView({behavior:"smooth"});
 showBanner(0);
-setInterval(() => { if (!document.hidden) showBanner(bannerIndex+1); },6000);
+setInterval(()=>{if(!document.hidden)showBanner(bannerIndex+1);},6000);
 
-function openBooking(movie) {
-  activeMovie = movie;
-  activeCinema = cinemas[0];
-  activeTime = times[0];
-  selectedSeats = [];
-  $("booking-title").textContent = movie.title;
-  $("booking-subtitle").textContent = "Choose a demo cinema and showtime in Prayagraj.";
-  $("booking").classList.add("show");
-  $("seat-area").classList.add("show");
-  renderCinemas();
-  renderTimes();
-  renderSeats();
-  $("booking").scrollIntoView({behavior:"smooth"});
+function openBooking(movie){
+ activeMovie=movie;
+ activeCinema=cinemas[0];
+ activeTime=times[0];
+ selectedSeats=[];
+ $("booking-title").textContent=movie.title;
+ $("booking-subtitle").textContent="Choose a demo cinema and showtime in Prayagraj.";
+ $("booking").classList.add("show");
+ $("seat-area").classList.add("show");
+ renderCinemas();
+ renderTimes();
+ renderSeats();
+ $("booking").scrollIntoView({behavior:"smooth"});
 }
 
-$("closeBooking").onclick = () => $("booking").classList.remove("show");
+$("closeBooking").onclick=()=>$("booking").classList.remove("show");
 
-function renderCinemas() {
-  $("cinemas").replaceChildren();
-  cinemas.forEach(cinema => {
-    const b = document.createElement("button");
-    b.className = "cinema-option" + (cinema===activeCinema ? " active" : "");
-    b.textContent = cinema;
-    b.onclick = () => { activeCinema=cinema; selectedSeats=[]; renderCinemas(); renderSeats(); };
-    $("cinemas").appendChild(b);
-  });
+function renderCinemas(){
+ $("cinemas").replaceChildren();
+ cinemas.forEach(cinema=>{
+  const b=document.createElement("button");
+  b.type="button";
+  b.className="cinema-option"+(cinema===activeCinema?" active":"");
+  b.textContent=cinema;
+  b.onclick=()=>{activeCinema=cinema;selectedSeats=[];renderCinemas();renderSeats();};
+  $("cinemas").appendChild(b);
+ });
 }
 
-function renderTimes() {
-  $("showtimes").replaceChildren();
-  times.forEach(time => {
-    const b = document.createElement("button");
-    b.className = "time-option" + (time===activeTime ? " active" : "");
-    b.textContent = time;
-    b.onclick = () => { activeTime=time; selectedSeats=[]; renderTimes(); renderSeats(); };
-    $("showtimes").appendChild(b);
-  });
+function renderTimes(){
+ $("showtimes").replaceChildren();
+ times.forEach(time=>{
+  const b=document.createElement("button");
+  b.type="button";
+  b.className="time-option"+(time===activeTime?" active":"");
+  b.textContent=time;
+  b.onclick=()=>{activeTime=time;selectedSeats=[];renderTimes();renderSeats();};
+  $("showtimes").appendChild(b);
+ });
 }
 
-function renderSeats() {
-  $("seats").replaceChildren();
-  ["A","B","C","D","E","F"].forEach(row => {
-    for (let n=1;n<=10;n++) {
-      const seat=row+n;
-      const b=document.createElement("button");
-      b.type="button";
-      b.className="seat";
-      b.textContent=seat;
-      if (bookedSeats.includes(seat)) {
-        b.classList.add("booked");
-        b.disabled=true;
-      } else if (selectedSeats.includes(seat)) {
-        b.classList.add("selected");
-      }
-      b.onclick=()=>{
-        selectedSeats=selectedSeats.includes(seat)
-          ? selectedSeats.filter(s=>s!==seat)
-          : [...selectedSeats,seat];
-        renderSeats();
-      };
-      $("seats").appendChild(b);
-    }
-  });
-  $("selected-label").textContent=selectedSeats.length ? selectedSeats.join(", ") : "None";
-  $("total").textContent="₹"+selectedSeats.length*price;
-}
+function renderSeats(){
+ $("seats").replaceChildren();
+ ["A","B","C","D","E","F"].forEach(row=>{
+  for(let n=1;n<=10;n++){
+   const seat=row+n;
+   const b=document.createElement("button");
+   b.type="button";
+   b.className="seat";
+   b.textContent=seat;
 
-function loadQrLibrary() {
-  return new Promise(resolve => {
-    if (window.QRCode) return resolve(true);
-    const script=document.createElement("script");
-    script.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
-    script.onload=()=>resolve(!!window.QRCode);
-    script.onerror=()=>resolve(false);
-    document.head.appendChild(script);
-  });
-}
+   if(bookedSeats.includes(seat)){
+    b.classList.add("booked");
+    b.disabled=true;
+   }else if(selectedSeats.includes(seat)){
+    b.classList.add("selected");
+   }
 
-$("confirmBooking").onclick = async () => {
-  if (!selectedSeats.length) {
-    toast("Please select at least one seat.");
-    return;
+   b.onclick=()=>{
+    selectedSeats=selectedSeats.includes(seat)
+      ?selectedSeats.filter(s=>s!==seat)
+      :[...selectedSeats,seat];
+    renderSeats();
+   };
+   $("seats").appendChild(b);
   }
+ });
+ $("selected-label").textContent=selectedSeats.length?selectedSeats.join(", "):"None";
+ $("total").textContent="₹"+selectedSeats.length*price;
+}
 
-  const seats=[...selectedSeats];
-  const ticket={
-    bookingId:"PD"+Date.now().toString().slice(-8),
-    movie:activeMovie.title,
-    cinema:activeCinema,
-    showtime:activeTime,
-    date:new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}),
-    seats,
-    total:seats.length*price
-  };
+function loadQrLibrary(){
+ return new Promise(resolve=>{
+  if(window.QRCode)return resolve(true);
+  const script=document.createElement("script");
+  script.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+  script.onload=()=>resolve(!!window.QRCode);
+  script.onerror=()=>resolve(false);
+  document.head.appendChild(script);
+ });
+}
 
-  $("ticketMovie").textContent=ticket.movie;
-  $("ticketCinema").textContent=ticket.cinema;
-  $("ticketTime").textContent=ticket.showtime;
-  $("ticketDate").textContent=ticket.date;
-  $("ticketSeats").textContent=ticket.seats.join(", ");
-  $("ticketId").textContent=ticket.bookingId;
-  $("ticketTotal").textContent="₹"+ticket.total;
-  $("ticketQR").replaceChildren();
-  $("ticketOverlay").hidden=false;
+$("confirmBooking").onclick=async()=>{
+ if(!selectedSeats.length){
+  showToast("Please select at least one seat.");
+  return;
+ }
 
-  const qrReady=await loadQrLibrary();
-  if (!$("ticketOverlay").hidden && qrReady && window.QRCode) {
-    new QRCode($("ticketQR"),{
-      text:JSON.stringify(ticket),
-      width:140,
-      height:140,
-      correctLevel:QRCode.CorrectLevel.M
-    });
-  } else if (!qrReady) {
-    $("ticketQR").textContent="QR unavailable. Check your internet connection.";
-  }
+ const seats=[...selectedSeats];
+ const ticket={
+  bookingId:"PD"+Date.now().toString().slice(-8),
+  movie:activeMovie.title,
+  cinema:activeCinema,
+  showtime:activeTime,
+  date:new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}),
+  seats,
+  total:seats.length*price
+ };
 
-  seats.forEach(seat=>{if(!bookedSeats.includes(seat)) bookedSeats.push(seat);});
-  selectedSeats=[];
-  renderSeats();
+ $("ticketMovie").textContent=ticket.movie;
+ $("ticketCinema").textContent=ticket.cinema;
+ $("ticketTime").textContent=ticket.showtime;
+ $("ticketDate").textContent=ticket.date;
+ $("ticketSeats").textContent=ticket.seats.join(", ");
+ $("ticketId").textContent=ticket.bookingId;
+ $("ticketTotal").textContent="₹"+ticket.total;
+ $("ticketQR").replaceChildren();
+ $("ticketOverlay").hidden=false;
+
+ const ready=await loadQrLibrary();
+ if(!$("ticketOverlay").hidden&&ready&&window.QRCode){
+  new QRCode($("ticketQR"),{
+   text:JSON.stringify(ticket),
+   width:140,
+   height:140,
+   correctLevel:QRCode.CorrectLevel.M
+  });
+ }else if(!ready){
+  $("ticketQR").textContent="QR code unavailable. Please check your internet connection.";
+ }
+
+ seats.forEach(seat=>{if(!bookedSeats.includes(seat))bookedSeats.push(seat);});
+ selectedSeats=[];
+ renderSeats();
 };
 
-function closeTicket() { $("ticketOverlay").hidden=true; }
+function closeTicket(){$("ticketOverlay").hidden=true;}
 $("closeTicket").onclick=closeTicket;
-$("closeTicket2").onclick=closeTicket;
+$("closeTicketBottom").onclick=closeTicket;
 $("printTicket").onclick=()=>window.print();
 $("ticketOverlay").addEventListener("click",e=>{if(e.target===$("ticketOverlay"))closeTicket();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTicket();});
